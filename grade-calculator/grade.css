@@ -29,10 +29,11 @@ body {
   border-right: 2px solid #6a0dad;
   white-space: nowrap;
   overflow: hidden;
+  width: 0;
   display: inline-block;
-  max-width: 100%;
-  animation: typing 3s steps(30, end) forwards, blink 0.5s step-end infinite alternate;
+  animation: typing 3s steps(30, end) forwards, blink 0.5s step-end 6;
 }
+
 
 /* 📥 Input Fields */
 input {

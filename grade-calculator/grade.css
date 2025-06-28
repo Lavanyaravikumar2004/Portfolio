@@ -26,15 +26,13 @@ body {
 .typing-text {
   font-size: 22px;
   margin-bottom: 20px;
-  border-right: 2px solid #6a0dad;
   white-space: nowrap;
   overflow: hidden;
-  width: 0;
-  display: inline-block;
-  .typing-text {
-  animation: typing 3s steps(30) forwards, blink 0.5s step-end 6;
+  animation: typing 3s steps(30) forwards, blink 0.5s step-end infinite alternate;
+  width: 100%; /* ✅ Ensure full width so cursor ends properly */
+  border-right: 2px solid #6a0dad;
 }
-}
+
 /* 📥 Input Fields */
 input {
   width: 85%;

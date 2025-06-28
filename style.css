@@ -54,12 +54,20 @@ body {
   transition: 0.3s;
 }
 
+/* ✨ Button bounce animation on hover */
 .btn:hover {
   box-shadow: 0 0 10px #ffffff99;
   transform: scale(1.05);
+  animation: bounce 0.4s;
 }
 
-/* Section styling with animation */
+@keyframes bounce {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.1); }
+  100% { transform: scale(1.05); }
+}
+
+/* Section styling with fade animation */
 section {
   max-width: 700px;
   margin: 30px auto;
@@ -67,13 +75,13 @@ section {
   background: white;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  animation: fadeIn 1s ease-in-out;
+  animation: fadeSlide 1s ease-in-out;
 }
 
-/* Fade-in effect */
-@keyframes fadeIn {
+/* ✨ Fade-in slide effect */
+@keyframes fadeSlide {
   from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* List styling for projects */

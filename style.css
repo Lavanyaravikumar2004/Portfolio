@@ -6,6 +6,7 @@ body {
   padding: 0;
 }
 
+/* Header section with photo on the left */
 .header-flex {
   display: flex;
   align-items: center;
@@ -14,6 +15,8 @@ body {
   background-color: #6a0dad;
   color: white;
   flex-wrap: wrap;
+  gap: 30px;
+  text-align: left;
 }
 
 .profile-pic {
@@ -22,8 +25,6 @@ body {
   border-radius: 50%;
   border: 4px solid white;
   object-fit: cover;
-  margin-right: 30px;
-  margin-bottom: 10px;
 }
 
 .intro {
@@ -39,19 +40,7 @@ body {
   margin: 5px 0 10px;
 }
 
-section {
-  max-width: 700px;
-  margin: 30px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-a {
-  color: #6a0dad;
-}
-
+/* Reusable button style */
 .btn {
   display: inline-block;
   padding: 10px 20px;
@@ -66,6 +55,73 @@ a {
 }
 
 .btn:hover {
-  box-shadow: 0 0 10px rgba(255,255,255,0.6);
+  box-shadow: 0 0 10px #ffffff99;
   transform: scale(1.05);
+}
+
+/* Section styling with animation */
+section {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Fade-in effect */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* List styling for projects */
+li {
+  margin-bottom: 10px;
+}
+
+li:hover {
+  transform: scale(1.02);
+  transition: 0.3s;
+  color: #6a0dad;
+}
+
+/* Contact form */
+form input, form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: inherit;
+}
+
+/* Form submit button */
+form button {
+  padding: 10px 20px;
+  background-color: #6a0dad;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+form button:hover {
+  background-color: #5a009d;
+  transform: scale(1.05);
+}
+
+/* Responsive for smaller screens */
+@media screen and (max-width: 600px) {
+  .header-flex {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .intro {
+    max-width: 100%;
+  }
 }

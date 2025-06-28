@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>LAVANYA R | Portfolio</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <header class="header-flex">
     <img src="lavanya.jpg" alt="Lavanya R" class="profile-pic">
     <div class="intro">
-      <h1>LAVANYA R</h1>
+      <h1><span class="typing-text"></span></h1>
       <p>Computer Science Student | Aspiring Developer</p>
       <a href="LavanyaResume.pdf" class="btn" download>📄 Download Resume</a>
     </div>
@@ -33,6 +34,21 @@
     <p>🔗 LinkedIn: <a href="https://www.linkedin.com/in/lavanya-r-7a55492b3" target="_blank">linkedin.com/in/lavanya</a></p>
     <p>🌍 GitHub: <a href="https://github.com/Lavanyaravikumar2004" target="_blank">github.com/Lavanyaravikumar2004</a></p>
   </section>
+
+  <!-- Typing animation script -->
+  <script>
+    const text = "LAVANYA R";
+    const element = document.querySelector(".typing-text");
+    let index = 0;
+    function type() {
+      if (index < text.length) {
+        element.innerHTML += text.charAt(index);
+        index++;
+        setTimeout(type, 120);
+      }
+    }
+    type();
+  </script>
 
 </body>
 </html>

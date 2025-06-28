@@ -6,7 +6,7 @@ body {
   padding: 0;
 }
 
-/* Header section with photo on the left */
+/* Header section with profile and name */
 .header-flex {
   display: flex;
   align-items: center;
@@ -31,16 +31,25 @@ body {
   max-width: 400px;
 }
 
-.intro h1 {
-  margin: 0;
-  font-size: 28px;
+.typing-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+  border-right: 2px solid white;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: blink 0.7s step-end infinite;
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
 }
 
 .intro p {
   margin: 5px 0 10px;
 }
 
-/* Reusable button style */
+/* Button style */
 .btn {
   display: inline-block;
   padding: 10px 20px;
@@ -54,7 +63,6 @@ body {
   transition: 0.3s;
 }
 
-/* ✨ Button bounce animation on hover */
 .btn:hover {
   box-shadow: 0 0 10px #ffffff99;
   transform: scale(1.05);
@@ -67,7 +75,7 @@ body {
   100% { transform: scale(1.05); }
 }
 
-/* Section styling with fade animation */
+/* Sections */
 section {
   max-width: 700px;
   margin: 30px auto;
@@ -78,13 +86,16 @@ section {
   animation: fadeSlide 1s ease-in-out;
 }
 
-/* ✨ Fade-in slide effect */
 @keyframes fadeSlide {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* List styling for projects */
+/* Links and project list */
+a {
+  color: #6a0dad;
+}
+
 li {
   margin-bottom: 10px;
 }
@@ -95,34 +106,7 @@ li:hover {
   color: #6a0dad;
 }
 
-/* Contact form */
-form input, form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-family: inherit;
-}
-
-/* Form submit button */
-form button {
-  padding: 10px 20px;
-  background-color: #6a0dad;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-form button:hover {
-  background-color: #5a009d;
-  transform: scale(1.05);
-}
-
-/* Responsive for smaller screens */
+/* Responsive layout */
 @media screen and (max-width: 600px) {
   .header-flex {
     flex-direction: column;
@@ -131,5 +115,9 @@ form button:hover {
 
   .intro {
     max-width: 100%;
+  }
+
+  .typing-text {
+    font-size: 24px;
   }
 }

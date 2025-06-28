@@ -4,17 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Grade Calculator</title>
-  <link rel="stylesheet" href="grade.css" />
+
+  <!-- ✅ PWA Setup -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#6a0dad" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <link rel="icon" href="icon-192.png" />
+
+  <!-- ✅ CSS & Fonts -->
+  <link rel="stylesheet" href="grade.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet" />
+
+  <!-- ✅ Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('✅ Service Worker Registered'))
+        .catch(err => console.error('❌ Service Worker Error:', err));
+    }
+  </script>
 </head>
+
 <body>
   <div class="container">
     <h2 class="typing-text">Student Grade Calculator</h2>
-    <input type="number" id="sub1" placeholder="Subject 1 Marks">
-    <input type="number" id="sub2" placeholder="Subject 2 Marks">
-    <input type="number" id="sub3" placeholder="Subject 3 Marks">
+    <input type="number" id="sub1" placeholder="Subject 1 Marks" />
+    <input type="number" id="sub2" placeholder="Subject 2 Marks" />
+    <input type="number" id="sub3" placeholder="Subject 3 Marks" />
     <button onclick="calculateGrade()">Calculate</button>
     <p id="result"></p>
   </div>

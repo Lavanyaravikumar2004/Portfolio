@@ -3,6 +3,11 @@ function calculateGrade() {
   let s2 = Number(document.getElementById('sub2').value);
   let s3 = Number(document.getElementById('sub3').value);
 
+  if (isNaN(s1) || isNaN(s2) || isNaN(s3)) {
+    document.getElementById("result").innerText = "❌ Please enter all marks!";
+    return;
+  }
+
   let total = s1 + s2 + s3;
   let percent = total / 3;
   let grade = "";

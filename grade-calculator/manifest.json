@@ -1,7 +1,7 @@
 {
   "name": "Student Grade Calculator",
   "short_name": "GradeCalc",
-  "start_url": "./",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#6a0dad",

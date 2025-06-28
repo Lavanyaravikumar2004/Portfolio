@@ -24,53 +24,34 @@
     <input type="number" id="sub3" placeholder="Subject 3 Marks" />
     <button onclick="calculateGrade()">Calculate</button>
     <p id="result"></p>
+    <br />
+    <button id="installBtn" style="display:none;">Install App</button>
   </div>
 
   <!-- ✅ JavaScript -->
   <script src="grade.js"></script>
-
-  <!-- ✅ Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(reg => console.log('✅ Service Worker Registered:', reg.scope))
         .catch(err => console.error('❌ Service Worker registration failed:', err));
     }
-  </script>
 
-  <!-- ✅ Install Prompt Button -->
-  <script>
+    // 🔔 Install Button (Optional)
     let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
+      installBtn.style.display = 'inline-block';
 
-      const btn = document.createElement('button');
-      btn.textContent = '📥 Install App';
-      btn.style = `
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 10px 20px;
-        background: #6a0dad;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        z-index: 1000;
-      `;
-      document.body.appendChild(btn);
-
-      btn.addEventListener('click', () => {
+      installBtn.addEventListener('click', () => {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then(choice => {
           if (choice.outcome === 'accepted') {
-            console.log('✅ User accepted install');
-          } else {
-            console.log('❌ User dismissed install');
+            console.log('👍 App Installed');
           }
-          btn.remove();
           deferredPrompt = null;
         });
       });

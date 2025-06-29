@@ -22,18 +22,17 @@ body {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
-/* ✅ Typing Text with No Blinking Cursor */
+/* ✅ Typing Text — No Blinking */
 .typing-text {
   display: inline-block;
   font-size: 22px;
   white-space: nowrap;
   overflow: hidden;
   width: 0;
-  animation: typing 3s steps(30) forwards;
-  caret-color: transparent;
-  border: none;
-  border-right: none;
+  animation: typing 3s steps(30, end) forwards;
   user-select: none;
+  border-right: none !important;
+  caret-color: transparent !important;
 }
 
 /* ✍️ Typing Animation */

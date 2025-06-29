@@ -1,58 +1,33 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Grade Calculator</title>
-
-  <!-- PWA Setup -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#6a0dad" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
-
-  <!-- CSS & Fonts -->
   <link rel="stylesheet" href="grade.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet" />
 </head>
 <body>
   <div class="container">
     <h2><span class="typing-text">Student Grade Calculator</span></h2>
-    <input type="number" id="sub1" placeholder="Subject 1 Marks" />
-    <input type="number" id="sub2" placeholder="Subject 2 Marks" />
-    <input type="number" id="sub3" placeholder="Subject 3 Marks" />
-    <button onclick="calculateGrade()">Calculate</button>
+    <div id="inputs">
+      <input type="number" placeholder="Subject 1 Marks" />
+      <input type="number" placeholder="Subject 2 Marks" />
+      <input type="number" placeholder="Subject 3 Marks" />
+    </div>
+    <button onclick="addSubject()">➕ Add Subject</button>
+    <button onclick="calculateGrade()">✅ Calculate</button>
     <p id="result"></p>
-    <button id="installBtn" style="display:none; margin-top:15px;">Install App</button>
+    <button onclick="downloadResult()">⬇️ Download Result</button>
+    <button onclick="toggleDark()">🌓 Toggle Dark Mode</button>
+    <button id="installBtn" style="display:none; margin-top:15px;">📲 Install App</button>
   </div>
 
-  <!-- JavaScript -->
   <script src="grade.js"></script>
-  <script>
-    let deferredPrompt;
-    const installBtn = document.getElementById('installBtn');
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = 'inline-block';
-
-      installBtn.addEventListener('click', () => {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(choice => {
-          if (choice.outcome === 'accepted') {
-            console.log('👍 App Installed');
-          }
-          deferredPrompt = null;
-        });
-      });
-    });
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(reg => console.log('✅ Service Worker Registered:', reg.scope))
-        .catch(err => console.error('❌ Service Worker registration failed:', err));
-    }
-  </script>
 </body>
 </html>

@@ -1,4 +1,3 @@
-/* 🌈 Body Background Gradient */
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -10,45 +9,33 @@ body {
   background-size: 400% 400%;
   animation: gradient 10s ease infinite;
 }
-
-/* 📦 Container Styling */
 .container {
   background: white;
   padding: 30px;
   border-radius: 15px;
   width: 90%;
-  max-width: 350px;
+  max-width: 400px;
   text-align: center;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
-
-/* ✅ Typing Text — No Blinking */
 .typing-text {
-  display: inline-block;
   font-size: 22px;
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
   width: 0;
   animation: typing 3s steps(30, end) forwards;
   user-select: none;
-  border-right: none !important;
-  caret-color: transparent !important;
+  caret-color: transparent;
 }
-
-/* ✍️ Typing Animation */
 @keyframes typing {
   from { width: 0; }
   to { width: 100%; }
 }
-
-/* 🎨 Gradient Animation */
 @keyframes gradient {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-
-/* 📥 Input Fields */
 input {
   width: 85%;
   padding: 10px;
@@ -57,8 +44,6 @@ input {
   border-radius: 8px;
   font-size: 15px;
 }
-
-/* 🔘 Button Styling */
 button {
   background-color: #6a0dad;
   color: white;
@@ -68,16 +53,21 @@ button {
   border-radius: 25px;
   cursor: pointer;
   transition: transform 0.2s ease;
+  margin: 5px;
 }
-
 button:hover {
   transform: scale(1.05);
   background-color: #5a009d;
 }
-
-/* 📊 Result Display */
 #result {
   margin-top: 20px;
   font-weight: bold;
   color: #333;
+}
+body.dark-mode {
+  background: #121212;
+}
+body.dark-mode .container {
+  background: #1e1e1e;
+  color: white;
 }

@@ -1,4 +1,4 @@
-/* 🌈 Body Gradient + Layout */
+/* 🌈 Body Background Gradient */
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -11,7 +11,7 @@ body {
   animation: gradient 10s ease infinite;
 }
 
-/* 📦 Container Box */
+/* 📦 Container Styling */
 .container {
   background: white;
   padding: 30px;
@@ -19,18 +19,34 @@ body {
   width: 90%;
   max-width: 350px;
   text-align: center;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
-/* ✨ Typing Text Animation */
+/* ✅ Typing Text with No Blinking Cursor */
 .typing-text {
+  display: inline-block;
   font-size: 22px;
-  margin-bottom: 20px;
   white-space: nowrap;
   overflow: hidden;
-  animation: typing 3s steps(30) forwards, blink 0.5s step-end infinite alternate;
-  width: 100%; /* ✅ Ensure full width so cursor ends properly */
-  border-right: 2px solid #6a0dad;
+  width: 0;
+  animation: typing 3s steps(30) forwards;
+  caret-color: transparent;
+  border: none;
+  border-right: none;
+  user-select: none;
+}
+
+/* ✍️ Typing Animation */
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* 🎨 Gradient Animation */
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* 📥 Input Fields */
@@ -60,26 +76,9 @@ button:hover {
   background-color: #5a009d;
 }
 
-/* 📊 Result Text */
+/* 📊 Result Display */
 #result {
   margin-top: 20px;
   font-weight: bold;
   color: #333;
-}
-
-/* 🔁 Typing Animation Keyframes */
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-@keyframes blink {
-  50% { border-color: transparent; }
-}
-
-/* 🎨 Gradient Background Animation */
-@keyframes gradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }

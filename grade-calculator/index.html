@@ -5,31 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Grade Calculator</title>
 
-  <!-- ✅ PWA Setup -->
+  <!-- PWA Setup -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#6a0dad" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
 
-  <!-- ✅ CSS & Fonts -->
+  <!-- CSS & Fonts -->
   <link rel="stylesheet" href="grade.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet" />
 </head>
-
 <body>
   <div class="container">
-    <h2 class="typing-text">Student Grade Calculator</h2>
+    <h2><span class="typing-text">Student Grade Calculator</span></h2>
     <input type="number" id="sub1" placeholder="Subject 1 Marks" />
     <input type="number" id="sub2" placeholder="Subject 2 Marks" />
     <input type="number" id="sub3" placeholder="Subject 3 Marks" />
     <button onclick="calculateGrade()">Calculate</button>
     <p id="result"></p>
-    <br />
-    <!-- 👇 Install Button (initially hidden) -->
-    <button id="installBtn" style="display:none;">Install App</button>
+    <button id="installBtn" style="display:none; margin-top:15px;">Install App</button>
   </div>
 
-  <!-- ✅ JavaScript -->
+  <!-- JavaScript -->
   <script src="grade.js"></script>
   <script>
     let deferredPrompt;
@@ -51,7 +48,6 @@
       });
     });
 
-    // ✅ Register Service Worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then(reg => console.log('✅ Service Worker Registered:', reg.scope))

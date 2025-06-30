@@ -2,47 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>To-Do List App</title>
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#6200ea" />
-  <link rel="icon" href="icon-192.png" type="image/png" />
-  <link rel="stylesheet" href="todo.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📝 To-Do App</title>
+  <link rel="stylesheet" href="todo.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4CAF50">
+  <link rel="icon" href="icon-192.png" />
 </head>
 <body>
   <div class="container">
-    <h1>📝 My To-Do List</h1>
-    <input type="text" id="taskInput" placeholder="Add a new task..." />
-    <button onclick="addTask()">Add</button>
+    <h1>✅ To-Do List</h1>
+    <input type="text" id="taskInput" placeholder="Enter a new task..." />
+    <button onclick="addTask()">Add Task</button>
     <ul id="taskList"></ul>
-    <button id="installBtn" style="display:none">Install App</button>
+    <button onclick="toggleDarkMode()">🌓 Toggle Mode</button>
   </div>
 
   <script src="todo.js"></script>
   <script>
     let deferredPrompt;
-    const installBtn = document.getElementById('installBtn');
-
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      installBtn.style.display = 'block';
-
-      installBtn.addEventListener('click', () => {
+      const installBtn = document.createElement("button");
+      installBtn.textContent = "📲 Install App";
+      installBtn.onclick = () => {
         deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(choice => {
-          if (choice.outcome === 'accepted') {
-            console.log('✅ App Installed');
-          }
-          deferredPrompt = null;
-        });
-      });
+      };
+      document.body.appendChild(installBtn);
     });
 
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(reg => console.log('✅ Service Worker Registered'))
-        .catch(err => console.error('❌ SW Error:', err));
+      navigator.serviceWorker.register('service-worker.js');
     }
   </script>
 </body>

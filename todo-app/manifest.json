@@ -1,10 +1,10 @@
 {
-  "name": "To-Do List PWA",
+  "name": "To-Do List App",
   "short_name": "ToDoApp",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#4CAF50",
+  "background_color": "#f3f3f3",
+  "theme_color": "#6a11cb",
   "icons": [
     {
       "src": "icon-192.png",

@@ -1,70 +1,75 @@
 function addTask() {
   const input = document.getElementById("taskInput");
-  const task = input.value.trim();
-  if (!task) return;
+  const taskText = input.value.trim();
+  if (!taskText) return;
 
-  const list = document.getElementById("taskList");
   const li = document.createElement("li");
-  li.textContent = task;
+  li.textContent = taskText;
 
   li.onclick = () => {
     li.classList.toggle("completed");
     saveTasks();
   };
 
-  const delBtn = document.createElement("button");
-  delBtn.textContent = "❌";
-  delBtn.onclick = (e) => {
+  const del = document.createElement("button");
+  del.textContent = "❌";
+  del.onclick = (e) => {
     e.stopPropagation();
     li.remove();
     saveTasks();
   };
 
-  li.appendChild(delBtn);
-  list.appendChild(li);
+  li.appendChild(del);
+  document.getElementById("taskList").appendChild(li);
   input.value = "";
 
   saveTasks();
 }
 
 function saveTasks() {
-  const tasks = [];
+  const items = [];
   document.querySelectorAll("#taskList li").forEach(li => {
-    tasks.push({
+    items.push({
       text: li.firstChild.textContent,
       done: li.classList.contains("completed")
     });
   });
-  localStorage.setItem("todo", JSON.stringify(tasks));
+  localStorage.setItem("tasks", JSON.stringify(items));
 }
 
 function loadTasks() {
-  const saved = JSON.parse(localStorage.getItem("todo") || "[]");
-  saved.forEach(t => {
-    const list = document.getElementById("taskList");
+  const data = JSON.parse(localStorage.getItem("tasks") || "[]");
+  data.forEach(item => {
     const li = document.createElement("li");
-    li.textContent = t.text;
-    if (t.done) li.classList.add("completed");
+    li.textContent = item.text;
+    if (item.done) li.classList.add("completed");
 
     li.onclick = () => {
       li.classList.toggle("completed");
       saveTasks();
     };
 
-    const delBtn = document.createElement("button");
-    delBtn.textContent = "❌";
-    delBtn.onclick = (e) => {
+    const del = document.createElement("button");
+    del.textContent = "❌";
+    del.onclick = (e) => {
       e.stopPropagation();
       li.remove();
       saveTasks();
     };
 
-    li.appendChild(delBtn);
-    list.appendChild(li);
+    li.appendChild(del);
+    document.getElementById("taskList").appendChild(li);
   });
 }
 window.onload = loadTasks;
 
 function toggleDarkMode() {
   document.body.classList.toggle("dark");
+}
+
+function clearAll() {
+  if (confirm("Clear all tasks?")) {
+    document.getElementById("taskList").innerHTML = "";
+    localStorage.removeItem("tasks");
+  }
 }

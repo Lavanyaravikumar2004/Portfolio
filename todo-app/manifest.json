@@ -1,10 +1,10 @@
 {
-  "name": "To-Do List App",
-  "short_name": "ToDoApp",
+  "name": "Pro To-Do List",
+  "short_name": "ToDo",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f3f3f3",
-  "theme_color": "#6a11cb",
+  "background_color": "#ffffff",
+  "theme_color": "#6a0dad",
   "icons": [
     {
       "src": "icon-192.png",

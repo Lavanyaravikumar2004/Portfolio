@@ -1,41 +1,18 @@
-/* Bubble Background */
 body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
   overflow-x: hidden;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-height: 100vh;
   transition: background 0.5s, color 0.5s;
+  position: relative;
 }
 
-/* Dark mode */
+/* Dark Mode */
 body.dark {
   background: #121212;
   color: #f0f0f0;
-}
-
-.bubble {
-  position: absolute;
-  bottom: -100px;
-  background: rgba(106, 13, 173, 0.2);
-  border-radius: 50%;
-  animation: float 15s infinite ease-in;
-  z-index: 1;
-}
-
-@keyframes float {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-1200px) scale(1.5);
-    opacity: 0;
-  }
 }
 
 .container {
@@ -44,6 +21,7 @@ body.dark {
   background: white;
   max-width: 650px;
   padding: 40px;
+  margin: 40px auto;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   text-align: center;
@@ -104,6 +82,7 @@ button:hover {
   opacity: 0.6;
 }
 
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -115,7 +94,6 @@ button:hover {
   }
 }
 
-/* Completed Animation */
 @keyframes glowFade {
   0% {
     background: #d1ffd1;
@@ -131,7 +109,7 @@ button:hover {
   animation: glowFade 0.8s ease;
 }
 
-/* Bubbles */
+/* Floating Bubbles */
 .bubble {
   position: absolute;
   bottom: -100px;

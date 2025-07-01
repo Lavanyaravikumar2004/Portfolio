@@ -1,82 +1,68 @@
-const taskInput = document.getElementById("taskInput");
-const dueDate = document.getElementById("dueDate");
-const category = document.getElementById("category");
-const taskList = document.getElementById("taskList");
-const searchInput = document.getElementById("searchInput");
-const stats = document.getElementById("stats");
-const toggleTheme = document.getElementById("toggleTheme");
+// script.js
+let tasks = [];
 
-const ding = document.getElementById("ding");
-const completeAudio = document.getElementById("complete");
-const deleteAudio = document.getElementById("delete");
-
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-function renderTasks(filter = "all", search = "") {
-  taskList.innerHTML = "";
-  let filtered = tasks.filter(task =>
-    (filter === "all" || task.status === filter) &&
-    task.text.toLowerCase().includes(search.toLowerCase())
-  );
-
-  filtered.forEach((task, index) => {
-    const li = document.createElement("li");
-    li.className = task.status === "completed" ? "completed" : "";
-    li.innerHTML = `
-      <span onclick="toggleStatus(${index})">${task.text} 📅 ${task.date} 🗂️ ${task.category}</span>
-      <button onclick="deleteTask(${index})">🗑️</button>
-    `;
-    taskList.appendChild(li);
-  });
-
-  stats.innerText = `📋 Total: ${tasks.length} ✅ Completed: ${tasks.filter(t => t.status === "completed").length}`;
+function playSound(id) {
+  document.getElementById(id).play();
 }
 
 function addTask() {
-  const text = taskInput.value.trim();
-  const date = dueDate.value;
-  const cat = category.value;
+  const input = document.getElementById("taskInput");
+  const date = document.getElementById("dueDate").value;
+  const cat = document.getElementById("category").value;
+  if (!input.value.trim()) return;
 
-  if (!text || !date) return alert("Please fill all fields!");
-
-  tasks.push({ text, date, category: cat, status: "pending" });
-  taskInput.value = "";
-  dueDate.value = "";
-  saveTasks();
-  renderTasks();
-  ding.play();
+  tasks.push({ text: input.value.trim(), date, cat, done: false });
+  input.value = "";
+  displayTasks();
+  playSound("ding");
 }
 
-function toggleStatus(index) {
-  tasks[index].status = tasks[index].status === "pending" ? "completed" : "pending";
-  saveTasks();
-  renderTasks();
-  completeAudio.play();
+function displayTasks(filter = "all") {
+  const list = document.getElementById("taskList");
+  const search = document.getElementById("searchInput")?.value.toLowerCase() || "";
+  list.innerHTML = "";
+
+  tasks
+    .filter(task => {
+      if (filter === "completed") return task.done;
+      if (filter === "pending") return !task.done;
+      return true;
+    })
+    .filter(task => task.text.toLowerCase().includes(search))
+    .forEach((task, i) => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <span onclick="toggleTask(${i})" style="cursor:pointer;">${task.done ? '✅' : '⬜'} ${task.text} (${task.date}) [${task.cat}]</span>
+        <button onclick="deleteTask(${i})">❌</button>
+      `;
+      li.className = task.done ? "completed" : "";
+      list.appendChild(li);
+    });
 }
 
-function deleteTask(index) {
-  tasks.splice(index, 1);
-  saveTasks();
-  renderTasks();
-  deleteAudio.play();
+function toggleTask(i) {
+  tasks[i].done = !tasks[i].done;
+  playSound("complete");
+  displayTasks();
+}
+
+function deleteTask(i) {
+  tasks.splice(i, 1);
+  playSound("delete");
+  displayTasks();
+}
+
+function filterTasks(type) {
+  displayTasks(type);
 }
 
 function clearAll() {
-  if (confirm("Clear all tasks?")) {
-    tasks = [];
-    saveTasks();
-    renderTasks();
-  }
+  tasks = [];
+  displayTasks();
 }
 
 function exportTasks(type) {
-  let data = type === "json" ? JSON.stringify(tasks, null, 2) :
-    tasks.map(t => `${t.text} - ${t.date} - ${t.category} - ${t.status}`).join("\n");
-
+  const data = type === "json" ? JSON.stringify(tasks, null, 2) : tasks.map(t => `${t.text} - ${t.date} - ${t.cat}`).join("\n");
   const blob = new Blob([data], { type: "text/plain" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
@@ -84,43 +70,8 @@ function exportTasks(type) {
   a.click();
 }
 
-function filterTasks(type) {
-  renderTasks(type, searchInput.value);
-}
+document.getElementById("searchInput")?.addEventListener("input", () => displayTasks());
 
-searchInput.addEventListener("input", () => renderTasks("all", searchInput.value));
-
-// Theme toggle
-toggleTheme.onclick = () => {
+document.getElementById("toggleTheme").addEventListener("click", () => {
   document.body.classList.toggle("dark");
-  toggleTheme.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
-};
-
-// Install PWA
-let deferredPrompt;
-const installBtn = document.getElementById("installBtn");
-
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  installBtn.style.display = "inline-block";
 });
-
-installBtn.addEventListener("click", () => {
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(choice => {
-    if (choice.outcome === "accepted") {
-      console.log("App Installed");
-      installBtn.style.display = "none";
-    }
-  });
-});
-
-// Service Worker
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js")
-    .then(() => console.log("Service Worker Registered"));
-}
-
-// Initial render
-renderTasks();

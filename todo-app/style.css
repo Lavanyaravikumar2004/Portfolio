@@ -1,95 +1,81 @@
+/* style.css */
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom, #eef1fc, #d7d0f5);
-  height: 100vh;
-  overflow-x: hidden;
-}
-
-.container {
-  background: white;
-  width: 90%;
-  max-width: 600px;
-  margin: 80px auto;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  position: relative;
-  z-index: 1;
-}
-
-h1 {
-  color: #6a0dad;
-  font-size: 2.5rem;
-}
-
-.input-group input,
-.input-group select,
-.input-group button {
-  padding: 10px;
-  font-size: 1rem;
-  margin: 5px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.input-group button {
-  background: #6a0dad;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.input-group button:hover {
-  background: #4b0082;
-}
-
-.filter-buttons,
-.footer-buttons {
-  margin-top: 20px;
-}
-
-button {
-  margin: 5px;
-  padding: 10px 15px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  border: none;
-  cursor: pointer;
-}
-
-ul#taskList {
-  list-style: none;
   padding: 0;
-  margin-top: 20px;
-  text-align: left;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  overflow-x: hidden;
+  min-height: 100vh;
+  transition: background 0.5s;
 }
 
-ul#taskList li {
-  padding: 10px;
-  background: #f0f0f0;
-  border-radius: 8px;
-  margin: 5px 0;
+body.dark {
+  background: #121212;
+  color: #fff;
 }
 
 .bubble {
   position: absolute;
   bottom: -100px;
-  background: rgba(106, 13, 173, 0.15);
+  background: rgba(106, 13, 173, 0.2);
   border-radius: 50%;
-  animation: floatUp 15s infinite ease-in;
-  pointer-events: none;
+  animation: float 15s infinite ease-in;
   z-index: 0;
 }
 
-@keyframes floatUp {
+@keyframes float {
   0% {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     opacity: 1;
   }
   100% {
-    transform: translateY(-1200px);
+    transform: translateY(-1200px) scale(1.5);
     opacity: 0;
   }
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  background: white;
+  max-width: 700px;
+  margin: 80px auto;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+body.dark .container {
+  background: #1e1e1e;
+}
+
+input, select, button {
+  padding: 10px;
+  margin: 10px 5px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background: #6a0dad;
+  color: white;
+  cursor: pointer;
+  border: none;
+}
+
+button:hover {
+  background: #4b0082;
+}
+
+#taskList li {
+  list-style: none;
+  margin: 10px 0;
+  text-align: left;
+}
+
+.completed span {
+  text-decoration: line-through;
+  opacity: 0.6;
 }

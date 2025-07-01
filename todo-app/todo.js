@@ -31,7 +31,6 @@ function exportTasks(format) {
   } else {
     content = JSON.stringify(tasks, null, 2);
   }
-
   const blob = new Blob([content], { type: format === 'txt' ? 'text/plain' : 'application/json' });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
@@ -41,7 +40,39 @@ function exportTasks(format) {
   document.body.removeChild(link);
 }
 
-// Other functions remain same (editTask, renderStats, filterTasks...)
+function editTask(i) {
+  const newTask = prompt("Edit task:", tasks[i].text);
+  if (newTask !== null) {
+    tasks[i].text = newTask;
+    saveAndRender();
+  }
+}
+
+function clearAll() {
+  if (confirm("Delete all tasks?")) {
+    tasks = [];
+    saveAndRender();
+  }
+}
+
+function filterTasks(type) {
+  const filtered = type === 'all' ? tasks : tasks.filter(t => t.done === (type === 'completed'));
+  taskList.innerHTML = "";
+  filtered.forEach((t, i) => {
+    const li = document.createElement("li");
+    li.className = t.done ? "completed" : "";
+    li.innerHTML = `<span ondblclick="editTask(${i})">${t.text} (${t.category}) - ${t.date}</span>
+                    <input type="checkbox" ${t.done ? "checked" : ""} onchange="toggle(${i})">
+                    <button onclick="remove(${i})">❌</button>`;
+    taskList.appendChild(li);
+  });
+}
+
+function renderStats() {
+  const done = tasks.filter(t => t.done).length;
+  const stats = document.getElementById("stats");
+  stats.innerText = `📊 Total: ${tasks.length}, ✅ Completed: ${done}, 🕓 Pending: ${tasks.length - done}`;
+}
 
 document.getElementById("searchInput").addEventListener("input", (e) => {
   const term = e.target.value.toLowerCase();
@@ -55,5 +86,23 @@ document.getElementById("toggleTheme").addEventListener("click", () => {
   const btn = document.getElementById("toggleTheme");
   btn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
 });
+
+function renderTasks() {
+  taskList.innerHTML = "";
+  tasks.forEach((t, i) => {
+    const li = document.createElement("li");
+    li.className = t.done ? "completed" : "";
+    li.innerHTML = `<span ondblclick="editTask(${i})">${t.text} (${t.category}) - ${t.date}</span>
+                    <input type="checkbox" ${t.done ? "checked" : ""} onchange="toggle(${i})">
+                    <button onclick="remove(${i})">❌</button>`;
+    taskList.appendChild(li);
+  });
+}
+
+function saveAndRender() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  renderTasks();
+  renderStats();
+}
 
 saveAndRender();

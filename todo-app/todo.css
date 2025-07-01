@@ -7,7 +7,6 @@ body {
   transition: background 0.5s, color 0.5s;
 }
 
-/* Dark mode */
 body.dark {
   background: #121212;
   color: #f0f0f0;
@@ -86,7 +85,6 @@ button:hover {
   background: #4b0082;
 }
 
-/* Tasks */
 #taskList li {
   list-style: none;
   margin: 10px auto;
@@ -109,7 +107,7 @@ button:hover {
     transform: translateY(0);
   }
 }
-/* Animation for completed task */
+
 @keyframes glowFade {
   0% {
     background: #d1ffd1;

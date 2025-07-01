@@ -1,108 +1,126 @@
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+const taskInput = document.getElementById("taskInput");
+const dueDate = document.getElementById("dueDate");
+const category = document.getElementById("category");
 const taskList = document.getElementById("taskList");
+const searchInput = document.getElementById("searchInput");
+const stats = document.getElementById("stats");
+const toggleTheme = document.getElementById("toggleTheme");
+
+const ding = document.getElementById("ding");
+const completeAudio = document.getElementById("complete");
+const deleteAudio = document.getElementById("delete");
+
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function renderTasks(filter = "all", search = "") {
+  taskList.innerHTML = "";
+  let filtered = tasks.filter(task =>
+    (filter === "all" || task.status === filter) &&
+    task.text.toLowerCase().includes(search.toLowerCase())
+  );
+
+  filtered.forEach((task, index) => {
+    const li = document.createElement("li");
+    li.className = task.status === "completed" ? "completed" : "";
+    li.innerHTML = `
+      <span onclick="toggleStatus(${index})">${task.text} 📅 ${task.date} 🗂️ ${task.category}</span>
+      <button onclick="deleteTask(${index})">🗑️</button>
+    `;
+    taskList.appendChild(li);
+  });
+
+  stats.innerText = `📋 Total: ${tasks.length} ✅ Completed: ${tasks.filter(t => t.status === "completed").length}`;
+}
 
 function addTask() {
-  const task = document.getElementById("taskInput").value;
-  const date = document.getElementById("dueDate").value;
-  const cat = document.getElementById("category").value;
-  if (!task) return alert("Enter a task");
-  tasks.push({ text: task, category: cat, date, done: false });
-  document.getElementById("taskInput").value = "";
-  document.getElementById("ding").play();
-  saveAndRender();
+  const text = taskInput.value.trim();
+  const date = dueDate.value;
+  const cat = category.value;
+
+  if (!text || !date) return alert("Please fill all fields!");
+
+  tasks.push({ text, date, category: cat, status: "pending" });
+  taskInput.value = "";
+  dueDate.value = "";
+  saveTasks();
+  renderTasks();
+  ding.play();
 }
 
-function toggle(i) {
-  tasks[i].done = !tasks[i].done;
-  document.getElementById("complete").play();
-  saveAndRender();
+function toggleStatus(index) {
+  tasks[index].status = tasks[index].status === "pending" ? "completed" : "pending";
+  saveTasks();
+  renderTasks();
+  completeAudio.play();
 }
 
-function remove(i) {
-  document.getElementById("delete").play();
-  tasks.splice(i, 1);
-  saveAndRender();
-}
-
-function exportTasks(format) {
-  let content;
-  if (format === 'txt') {
-    content = tasks.map(t => `${t.text} [${t.category}] - ${t.date} ${t.done ? '(Done)' : ''}`).join('\n');
-  } else {
-    content = JSON.stringify(tasks, null, 2);
-  }
-  const blob = new Blob([content], { type: format === 'txt' ? 'text/plain' : 'application/json' });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = `tasks.${format}`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-
-function editTask(i) {
-  const newTask = prompt("Edit task:", tasks[i].text);
-  if (newTask !== null) {
-    tasks[i].text = newTask;
-    saveAndRender();
-  }
+function deleteTask(index) {
+  tasks.splice(index, 1);
+  saveTasks();
+  renderTasks();
+  deleteAudio.play();
 }
 
 function clearAll() {
-  if (confirm("Delete all tasks?")) {
+  if (confirm("Clear all tasks?")) {
     tasks = [];
-    saveAndRender();
+    saveTasks();
+    renderTasks();
   }
 }
 
+function exportTasks(type) {
+  let data = type === "json" ? JSON.stringify(tasks, null, 2) :
+    tasks.map(t => `${t.text} - ${t.date} - ${t.category} - ${t.status}`).join("\n");
+
+  const blob = new Blob([data], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `tasks.${type}`;
+  a.click();
+}
+
 function filterTasks(type) {
-  const filtered = type === 'all' ? tasks : tasks.filter(t => t.done === (type === 'completed'));
-  taskList.innerHTML = "";
-  filtered.forEach((t, i) => {
-    const li = document.createElement("li");
-    li.className = t.done ? "completed" : "";
-    li.innerHTML = `<span ondblclick="editTask(${i})">${t.text} (${t.category}) - ${t.date}</span>
-                    <input type="checkbox" ${t.done ? "checked" : ""} onchange="toggle(${i})">
-                    <button onclick="remove(${i})">❌</button>`;
-    taskList.appendChild(li);
-  });
+  renderTasks(type, searchInput.value);
 }
 
-function renderStats() {
-  const done = tasks.filter(t => t.done).length;
-  const stats = document.getElementById("stats");
-  stats.innerText = `📊 Total: ${tasks.length}, ✅ Completed: ${done}, 🕓 Pending: ${tasks.length - done}`;
-}
+searchInput.addEventListener("input", () => renderTasks("all", searchInput.value));
 
-document.getElementById("searchInput").addEventListener("input", (e) => {
-  const term = e.target.value.toLowerCase();
-  document.querySelectorAll("#taskList li").forEach(li => {
-    li.style.display = li.innerText.toLowerCase().includes(term) ? "" : "none";
-  });
-});
-
-document.getElementById("toggleTheme").addEventListener("click", () => {
+// Theme toggle
+toggleTheme.onclick = () => {
   document.body.classList.toggle("dark");
-  const btn = document.getElementById("toggleTheme");
-  btn.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+  toggleTheme.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+};
+
+// Install PWA
+let deferredPrompt;
+const installBtn = document.getElementById("installBtn");
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = "inline-block";
 });
 
-function renderTasks() {
-  taskList.innerHTML = "";
-  tasks.forEach((t, i) => {
-    const li = document.createElement("li");
-    li.className = t.done ? "completed" : "";
-    li.innerHTML = `<span ondblclick="editTask(${i})">${t.text} (${t.category}) - ${t.date}</span>
-                    <input type="checkbox" ${t.done ? "checked" : ""} onchange="toggle(${i})">
-                    <button onclick="remove(${i})">❌</button>`;
-    taskList.appendChild(li);
+installBtn.addEventListener("click", () => {
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(choice => {
+    if (choice.outcome === "accepted") {
+      console.log("App Installed");
+      installBtn.style.display = "none";
+    }
   });
+});
+
+// Service Worker
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js")
+    .then(() => console.log("Service Worker Registered"));
 }
 
-function saveAndRender() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-  renderTasks();
-  renderStats();
-}
-
-saveAndRender();
+// Initial render
+renderTasks();

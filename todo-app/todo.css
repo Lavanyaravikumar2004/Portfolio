@@ -1,90 +1,45 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
-}
-
 body {
-  background: var(--bg);
-  color: var(--text);
-  transition: background 0.3s, color 0.3s;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f0f0;
+  color: #333;
+  transition: 0.3s;
 }
-
-:root {
-  --bg: #f0f0f0;
-  --text: #222;
-  --card: #fff;
-  --primary: #6a0dad;
-  --accent: #00c896;
-}
-
-.dark {
-  --bg: #121212;
-  --text: #fff;
-  --card: #1f1f1f;
-}
-
-.container {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  background: var(--card);
-  border-radius: 15px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-.input-group, .filter-group {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-input, select {
-  flex: 1;
-  padding: 10px;
-  border: 2px solid var(--primary);
-  border-radius: 10px;
-}
-
-button {
-  padding: 10px 15px;
-  background: var(--primary);
-  border: none;
-  border-radius: 10px;
+body.dark {
+  background: #181818;
   color: white;
-  cursor: pointer;
-  transition: 0.2s;
 }
-
-button:hover {
-  background: var(--accent);
+.app {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
 }
-
-ul {
-  list-style: none;
-}
-
-li {
+header {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
-  background: var(--bg);
-  margin: 5px 0;
-  border-radius: 10px;
+  align-items: center;
 }
-
+input, select, button {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  background: white;
+  padding: 10px;
+  margin: 10px 0;
+  border-left: 5px solid #6a0dad;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.3s;
+}
 li.completed {
   text-decoration: line-through;
-  color: gray;
-}
-
-footer {
-  text-align: center;
-  margin-top: 20px;
+  opacity: 0.6;
 }

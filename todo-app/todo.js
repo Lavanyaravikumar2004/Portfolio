@@ -1,70 +1,81 @@
-let tasks = [];
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+const taskList = document.getElementById("taskList");
 
-const taskInput = document.getElementById("task");
-const categoryInput = document.getElementById("category");
-const taskList = document.getElementById("task-list");
-const filterSelect = document.getElementById("filter");
-const searchInput = document.getElementById("search");
+function addTask() {
+  const task = document.getElementById("taskInput").value;
+  const date = document.getElementById("dueDate").value;
+  const cat = document.getElementById("category").value;
+  if (!task) return alert("Enter a task");
+  tasks.push({ text: task, category: cat, date, done: false });
+  document.getElementById("taskInput").value = "";
+  saveAndRender();
+}
+
+function saveAndRender() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  renderTasks();
+  renderStats();
+}
 
 function renderTasks() {
   taskList.innerHTML = "";
-
-  const filtered = tasks.filter(task => {
-    const matchesFilter =
-      filterSelect.value === "all" ||
-      (filterSelect.value === "completed" && task.completed) ||
-      (filterSelect.value === "pending" && !task.completed);
-
-    const matchesSearch = task.text.toLowerCase().includes(searchInput.value.toLowerCase());
-
-    return matchesFilter && matchesSearch;
-  });
-
-  filtered.forEach((task, index) => {
+  tasks.forEach((t, i) => {
     const li = document.createElement("li");
-    li.className = task.completed ? "completed" : "";
-
-    li.innerHTML = `
-      <span>${task.text} (${task.category})</span>
-      <div>
-        <button onclick="toggleComplete(${index})">✅</button>
-        <button onclick="deleteTask(${index})">❌</button>
-      </div>
-    `;
+    li.className = t.done ? "completed" : "";
+    li.innerHTML = `<span ondblclick="editTask(${i})">${t.text} (${t.category}) - ${t.date}</span>
+                    <input type="checkbox" ${t.done ? "checked" : ""} onchange="toggle(${i})">
+                    <button onclick="remove(${i})">❌</button>`;
     taskList.appendChild(li);
   });
 }
 
-function addTask() {
-  const text = taskInput.value.trim();
-  const category = categoryInput.value;
-
-  if (!text) return alert("Enter a task!");
-  tasks.push({ text, category, completed: false });
-
-  taskInput.value = "";
-  renderTasks();
+function toggle(i) {
+  tasks[i].done = !tasks[i].done;
+  saveAndRender();
 }
 
-function toggleComplete(index) {
-  tasks[index].completed = !tasks[index].completed;
-  renderTasks();
+function remove(i) {
+  tasks.splice(i, 1);
+  saveAndRender();
 }
 
-function deleteTask(index) {
-  tasks.splice(index, 1);
-  renderTasks();
+function clearAll() {
+  if (confirm("Delete all tasks?")) tasks = [], saveAndRender();
 }
 
-document.getElementById("add-btn").addEventListener("click", addTask);
-filterSelect.addEventListener("change", renderTasks);
-searchInput.addEventListener("input", renderTasks);
-document.getElementById("toggle-theme").addEventListener("click", () => {
+function editTask(i) {
+  const newTask = prompt("Edit task:", tasks[i].text);
+  if (newTask !== null) tasks[i].text = newTask, saveAndRender();
+}
+
+function filterTasks(type) {
+  const filtered = type === 'all' ? tasks : tasks.filter(t => t.done === (type === 'completed'));
+  taskList.innerHTML = "";
+  filtered.forEach((t, i) => {
+    const li = document.createElement("li");
+    li.className = t.done ? "completed" : "";
+    li.innerHTML = `<span>${t.text} (${t.category}) - ${t.date}</span>
+                    <input type="checkbox" ${t.done ? "checked" : ""} onchange="toggle(${i})">
+                    <button onclick="remove(${i})">❌</button>`;
+    taskList.appendChild(li);
+  });
+}
+
+function renderStats() {
+  const done = tasks.filter(t => t.done).length;
+  const stats = document.getElementById("stats");
+  stats.innerText = `📊 Total: ${tasks.length}, ✅ Completed: ${done}, 🕓 Pending: ${tasks.length - done}`;
+}
+
+document.getElementById("searchInput").addEventListener("input", (e) => {
+  const term = e.target.value.toLowerCase();
+  document.querySelectorAll("#taskList li").forEach(li => {
+    li.style.display = li.innerText.toLowerCase().includes(term) ? "" : "none";
+  });
+});
+
+document.getElementById("toggleTheme").addEventListener("click", () => {
   document.body.classList.toggle("dark");
 });
 
-window.addEventListener("load", () => {
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
-  }
-});
+saveAndRender();

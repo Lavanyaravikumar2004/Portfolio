@@ -1,5 +1,5 @@
 {
-  "name": "Pro To-Do List",
+  "name": "Pro To-Do App",
   "short_name": "ToDo",
   "start_url": "./index.html",
   "display": "standalone",

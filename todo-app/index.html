@@ -2,38 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pro To-Do App</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#6a0dad" />
 </head>
 <body>
   <div class="container">
     <h1>🟪 Pro To-Do App</h1>
-    <section class="input-section">
-      <input type="text" placeholder="Add new task" />
-      <input type="date" />
-      <select>
+    <div class="input-group">
+      <input type="text" id="taskInput" placeholder="Add new task">
+      <input type="date" id="dueDate">
+      <select id="category">
         <option>📚 Study</option>
         <option>💼 Work</option>
         <option>🏠 Personal</option>
       </select>
-      <button>Add</button>
-    </section>
-    <p class="note">This is a sample layout with floating bubbles 🎈</p>
+      <button onclick="addTask()">Add</button>
+    </div>
+
+    <p>This is a sample layout with floating bubbles 🎈</p>
+
+    <div class="filter-buttons">
+      <button onclick="filterTasks('all')">All</button>
+      <button onclick="filterTasks('completed')">Completed</button>
+      <button onclick="filterTasks('pending')">Pending</button>
+    </div>
+
+    <ul id="taskList"></ul>
+
+    <div class="footer-buttons">
+      <button onclick="clearAll()">🗑 Clear All</button>
+      <button onclick="exportTasks('txt')">⬇ Export TXT</button>
+      <button onclick="exportTasks('json')">⬇ Export JSON</button>
+      <button id="installBtn" style="display:none;">📥 Install App</button>
+    </div>
   </div>
 
-  <!-- Floating Bubbles Script -->
+  <!-- Floating bubbles -->
   <script>
     for (let i = 0; i < 20; i++) {
       const bubble = document.createElement("div");
-      const size = Math.random() * 60 + 20 + "px";
       bubble.classList.add("bubble");
       bubble.style.left = Math.random() * 100 + "vw";
+      const size = Math.random() * 50 + 20 + "px";
       bubble.style.width = size;
       bubble.style.height = size;
       bubble.style.animationDuration = 10 + Math.random() * 10 + "s";
       document.body.appendChild(bubble);
     }
   </script>
+
+  <script src="script.js"></script>
 </body>
 </html>

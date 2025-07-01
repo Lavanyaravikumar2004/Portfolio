@@ -1,77 +1,95 @@
-/* General */
 body {
   margin: 0;
-  padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #f0f8ff, #e6e6fa);
-  overflow: hidden;
+  background: linear-gradient(to bottom, #eef1fc, #d7d0f5);
   height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Container */
 .container {
-  position: relative;
-  z-index: 2;
+  background: white;
+  width: 90%;
   max-width: 600px;
-  margin: 100px auto;
+  margin: 80px auto;
   padding: 40px;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
 h1 {
   color: #6a0dad;
   font-size: 2.5rem;
-  margin-bottom: 20px;
 }
 
-.input-section input,
-.input-section select,
-.input-section button {
+.input-group input,
+.input-group select,
+.input-group button {
   padding: 10px;
-  margin: 10px 5px;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  margin: 5px;
   border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
-.input-section button {
-  background-color: #6a0dad;
+.input-group button {
+  background: #6a0dad;
   color: white;
   border: none;
   cursor: pointer;
 }
 
-.input-section button:hover {
-  background-color: #4b0082;
+.input-group button:hover {
+  background: #4b0082;
 }
 
-.note {
-  color: #666;
-  font-size: 0.95rem;
+.filter-buttons,
+.footer-buttons {
   margin-top: 20px;
 }
 
-/* Bubbles */
+button {
+  margin: 5px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+}
+
+ul#taskList {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  text-align: left;
+}
+
+ul#taskList li {
+  padding: 10px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  margin: 5px 0;
+}
+
 .bubble {
   position: absolute;
   bottom: -100px;
-  background: rgba(106, 13, 173, 0.2);
+  background: rgba(106, 13, 173, 0.15);
   border-radius: 50%;
-  animation: float 15s infinite ease-in;
-  z-index: 0;
+  animation: floatUp 15s infinite ease-in;
   pointer-events: none;
+  z-index: 0;
 }
 
-@keyframes float {
+@keyframes floatUp {
   0% {
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
     opacity: 1;
   }
   100% {
-    transform: translateY(-1200px) scale(1.5);
+    transform: translateY(-1200px);
     opacity: 0;
   }
 }

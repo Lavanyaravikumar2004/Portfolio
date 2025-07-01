@@ -1,115 +1,60 @@
+/* General */
 body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-  overflow-x: hidden;
-  min-height: 100vh;
-  transition: background 0.5s, color 0.5s;
-  position: relative;
+  background: linear-gradient(135deg, #f0f8ff, #e6e6fa);
+  overflow: hidden;
+  height: 100vh;
 }
 
-/* Dark Mode */
-body.dark {
-  background: #121212;
-  color: #f0f0f0;
-}
-
+/* Container */
 .container {
   position: relative;
-  z-index: 10;
-  background: white;
-  max-width: 650px;
+  z-index: 2;
+  max-width: 600px;
+  margin: 100px auto;
   padding: 40px;
-  margin: 40px auto;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
   text-align: center;
 }
 
-body.dark .container {
-  background: #1e1e1e;
-  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
-}
-
 h1 {
-  font-size: 3rem;
   color: #6a0dad;
+  font-size: 2.5rem;
   margin-bottom: 20px;
 }
 
-input[type="text"],
-input[type="date"],
-select,
-button {
-  padding: 12px;
+.input-section input,
+.input-section select,
+.input-section button {
+  padding: 10px;
   margin: 10px 5px;
-  font-size: 1.1rem;
-  border: 1px solid #999;
+  font-size: 1rem;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  transition: all 0.3s ease;
 }
 
-input:focus,
-select:focus,
-button:hover {
-  outline: none;
-  box-shadow: 0 0 10px #6a0dad, 0 0 20px #b266ff;
-}
-
-button {
-  background: #6a0dad;
+.input-section button {
+  background-color: #6a0dad;
   color: white;
   border: none;
   cursor: pointer;
 }
 
-button:hover {
-  background: #4b0082;
+.input-section button:hover {
+  background-color: #4b0082;
 }
 
-/* Tasks */
-#taskList li {
-  list-style: none;
-  margin: 10px auto;
-  text-align: left;
-  animation: fadeIn 0.5s ease;
-  font-size: 1.1rem;
+.note {
+  color: #666;
+  font-size: 0.95rem;
+  margin-top: 20px;
 }
 
-.completed span {
-  text-decoration: line-through;
-  opacity: 0.6;
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes glowFade {
-  0% {
-    background: #d1ffd1;
-    box-shadow: 0 0 8px #66ff66;
-  }
-  100% {
-    background: none;
-    box-shadow: none;
-  }
-}
-
-.completed {
-  animation: glowFade 0.8s ease;
-}
-
-/* Floating Bubbles */
+/* Bubbles */
 .bubble {
   position: absolute;
   bottom: -100px;

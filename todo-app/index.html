@@ -48,14 +48,17 @@
     </footer>
   </div>
 
-  <!-- Audio Effects -->
+  <!-- 🔊 Audio Effects -->
   <audio id="ding" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c9e3f979b5.mp3?filename=click-124467.mp3" preload="auto"></audio>
   <audio id="delete" src="https://cdn.pixabay.com/download/audio/2022/03/18/audio_f3a993177d.mp3?filename=pop-94319.mp3" preload="auto"></audio>
   <audio id="complete" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_48bde99868.mp3?filename=notification-112698.mp3" preload="auto"></audio>
 
+  <!-- 📜 Main Script -->
   <script src="script.js"></script>
+
+  <!-- 📲 Install + 💬 Bubbles -->
   <script>
-    // Install prompt handler
+    // Handle install prompt
     let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -70,9 +73,15 @@
         });
       });
     });
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
 
-    // Floating bubbles
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('✅ Service Worker Registered'))
+        .catch(err => console.error('❌ SW Error:', err));
+    }
+
+    // Create floating bubbles
     for (let i = 0; i < 20; i++) {
       const bubble = document.createElement("div");
       const size = Math.random() * 60 + 20 + "px";

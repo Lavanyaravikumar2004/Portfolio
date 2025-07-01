@@ -12,6 +12,9 @@
   <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 </head>
 <body>
+  <div class="container">
+    <!-- everything from <h1> to Install button goes here -->
+  </div>
   <div class="app">
     <header>
       <h1>🟪 Pro To-Do App</h1>
@@ -64,6 +67,20 @@
       });
     });
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
+  </script>
+
+  <!-- Floating bubbles -->
+  <script>
+    for (let i = 0; i < 20; i++) {
+      const bubble = document.createElement("div");
+      const size = Math.random() * 60 + 20 + "px";
+      bubble.classList.add("bubble");
+      bubble.style.left = Math.random() * 100 + "vw";
+      bubble.style.width = size;
+      bubble.style.height = size;
+      bubble.style.animationDuration = 10 + Math.random() * 10 + "s";
+      document.body.appendChild(bubble);
+    }
   </script>
 </body>
 </html>

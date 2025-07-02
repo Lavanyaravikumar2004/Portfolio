@@ -1,6 +1,6 @@
 self.addEventListener('install', function (e) {
   e.waitUntil(
-    caches.open('grade-calculator-cache').then(function (cache) {
+    caches.open('grade-calculator-cache-v2').then(function (cache) {
       return cache.addAll([
         '/grade-calculator/',
         '/grade-calculator/index.html',

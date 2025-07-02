@@ -1,41 +1,3 @@
-let subjectCount = 3;
-
-function createSubjectInput(mark = "", index = null) {
-  const subjectDiv = document.createElement("div");
-  subjectDiv.className = "subject";
-
-  const input = document.createElement("input");
-  input.type = "number";
-  input.value = mark;
-  input.readOnly = true;
-  input.placeholder = index !== null ? `Subject ${index + 1} Marks` : `Subject Marks`;
-
-  input.onclick = () => input.readOnly = false;
-  input.onblur = () => input.readOnly = true;
-
-  const delBtn = document.createElement("button");
-  delBtn.innerHTML = "🗑️";
-  delBtn.onclick = function () {
-    deleteSubject(delBtn);
-  };
-
-  subjectDiv.appendChild(input);
-  subjectDiv.appendChild(delBtn);
-  return subjectDiv;
-}
-
-function addSubject() {
-  subjectCount++;
-  const inputsDiv = document.getElementById("inputs");
-  const subjectInput = createSubjectInput();
-  inputsDiv.appendChild(subjectInput);
-}
-
-function deleteSubject(button) {
-  const subjectDiv = button.parentElement;
-  subjectDiv.remove();
-}
-
 function calculateGrade() {
   const inputs = document.querySelectorAll('#inputs input');
   let total = 0;
@@ -69,6 +31,17 @@ function calculateGrade() {
   speechSynthesis.speak(new SpeechSynthesisUtterance(`Your grade is ${grade}. ${remark}`));
 }
 
+function toggleDark() {
+  document.body.classList.toggle("dark-mode");
+}
+
+function addSubject() {
+  const input = document.createElement("input");
+  input.type = "number";
+  input.placeholder = `Subject ${document.querySelectorAll('#inputs input').length + 1} Marks`;
+  document.getElementById("inputs").appendChild(input);
+}
+
 function downloadResult() {
   const result = document.getElementById("result").innerText;
   const blob = new Blob([result], { type: 'text/plain' });
@@ -78,45 +51,18 @@ function downloadResult() {
   link.click();
 }
 
-function toggleDark() {
-  document.body.classList.toggle("dark-mode");
-}
-
-function sortSubjects() {
-  const container = document.getElementById("inputs");
-  const subjects = Array.from(container.getElementsByClassName("subject"));
-
-  subjects.sort((a, b) => {
-    const valA = Number(a.querySelector("input").value || 0);
-    const valB = Number(b.querySelector("input").value || 0);
-    return valA - valB;
-  });
-
-  container.innerHTML = "";
-  subjects.forEach(sub => container.appendChild(sub));
-}
-
-function changeTheme() {
-  const theme = document.getElementById("themeSelector").value;
-  document.body.className = '';
-  document.body.classList.add(`theme-${theme}`);
-  localStorage.setItem("selectedTheme", theme);
-}
-
 window.onload = () => {
   const saved = JSON.parse(localStorage.getItem("lastMarks"));
-  const savedTheme = localStorage.getItem("selectedTheme") || "default";
-  document.getElementById("themeSelector").value = savedTheme;
-  changeTheme();
-
   if (saved) {
     const container = document.getElementById("inputs");
     container.innerHTML = "";
     saved.forEach((mark, index) => {
-      const subjectInput = createSubjectInput(mark, index);
-      container.appendChild(subjectInput);
+      const input = document.createElement("input");
+      input.type = "number";
+      input.placeholder = `Subject ${index + 1} Marks`;
+      input.value = mark;
+      container.appendChild(input);
     });
-    subjectCount = saved.length;
   }
 
   let deferredPrompt;

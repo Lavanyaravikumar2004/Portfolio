@@ -3,6 +3,7 @@
   "short_name": "GradeCalc",
   "start_url": "./index.html",
   "display": "standalone",
+  "display_override": ["standalone"],
   "background_color": "#ffffff",
   "theme_color": "#6a0dad",
   "icons": [

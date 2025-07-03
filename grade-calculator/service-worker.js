@@ -6,8 +6,10 @@ const urlsToCache = [
   './grade.js',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './fonts/Poppins-Regular.ttf'  // ✅ This line is crucial
 ];
+
 
 self.addEventListener('install', event => {
   event.waitUntil(
@@ -17,6 +19,14 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request).catch(() => {
+        console.warn('⛔ Failed to fetch resource:', event.request.url);
+        return new Response('', {
+          status: 503,
+          statusText: 'Offline or fetch failed',
+        });
+      });
+    })
   );
 });

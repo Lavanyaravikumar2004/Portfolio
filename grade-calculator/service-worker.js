@@ -1,14 +1,14 @@
 self.addEventListener('install', event => {
-  console.log('[SW] Installing');
-  self.skipWaiting(); // Activate immediately
+  console.log('[SW] ✅ Installed');
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
-  console.log('[SW] Activating');
-  event.waitUntil(clients.claim()); // Take control of pages
+  console.log('[SW] ✅ Activated');
+  event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('fetch', event => {
-  console.log('[SW] Fetching:', event.request.url);
+  console.log('[SW] 🔄 Fetching:', event.request.url);
   event.respondWith(fetch(event.request));
 });

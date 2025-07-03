@@ -11,22 +11,29 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', event => {
-  console.log('[SW] Installing and caching...');
+  console.log('[SW] Installing...');
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(cache => {
+      console.log('[SW] Caching app shell');
+      return cache.addAll(urlsToCache);
+    })
   );
 });
 
 self.addEventListener('activate', event => {
   console.log('[SW] Activated');
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(clients.claim());
 });
 
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    }).catch(() => caches.match('/grade-calculator/index.html'))
+      return response || fetch(event.request).catch(() => {
+        if (event.request.mode === 'navigate') {
+          return caches.match('/grade-calculator/index.html');
+        }
+      });
+    })
   );
 });

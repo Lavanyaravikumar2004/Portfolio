@@ -33,3 +33,12 @@ self.addEventListener('fetch', event => {
     caches.match(event.request).then(res => res || fetch(event.request))
   );
 });
+self.addEventListener('install', event => {
+  self.skipWaiting(); // Force it to activate immediately
+  // your caching code...
+});
+
+self.addEventListener('activate', event => {
+  clients.claim(); // Take control of all pages
+  // your cleanup code...
+});

@@ -8,22 +8,27 @@ const urlsToCache = [
   '/grade-calculator/service-worker.js',
 ];
 
-// Install and cache assets
+// Install event — cache all assets
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(cache => {
+      console.log('[SW] Caching app shell');
+      return cache.addAll(urlsToCache);
+    })
   );
 });
 
-// Activate and take control
+// Activate event — take control immediately
 self.addEventListener('activate', event => {
   event.waitUntil(self.clients.claim());
 });
 
-// Serve cached files if available
+// Fetch event — serve cached assets when offline
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(res => res || fetch(event.request))
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
+    })
   );
 });

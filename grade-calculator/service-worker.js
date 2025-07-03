@@ -1,30 +1,32 @@
-const CACHE_NAME = 'grade-calculator-v1';
+const CACHE_NAME = 'grade-calculator-v2';
+
 const urlsToCache = [
-  '/grade-calculator/',
-  '/grade-calculator/index.html',
-  '/grade-calculator/style.css',
-  '/grade-calculator/grade.css',
-  '/grade-calculator/script.js',
-  '/grade-calculator/service-worker.js',
+  'https://lavanyaravikumar2004.github.io/grade-calculator/',
+  'https://lavanyaravikumar2004.github.io/grade-calculator/index.html',
+  'https://lavanyaravikumar2004.github.io/grade-calculator/style.css',
+  'https://lavanyaravikumar2004.github.io/grade-calculator/grade.css',
+  'https://lavanyaravikumar2004.github.io/grade-calculator/script.js',
+  'https://lavanyaravikumar2004.github.io/grade-calculator/service-worker.js',
 ];
 
-// Install event — cache all assets
+// Install: cache all required files
 self.addEventListener('install', event => {
+  console.log('[SW] Installing and caching assets...');
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      console.log('[SW] Caching app shell');
       return cache.addAll(urlsToCache);
     })
   );
 });
 
-// Activate event — take control immediately
+// Activate: take control
 self.addEventListener('activate', event => {
+  console.log('[SW] Activated');
   event.waitUntil(self.clients.claim());
 });
 
-// Fetch event — serve cached assets when offline
+// Fetch: try cache first, fallback to network
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => {

@@ -3,49 +3,109 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grade Calculator</title>
+  <title>Pro To-Do App</title>
+  <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
+  <link rel="icon" sizes="192x192" href="icon-192.png" />
+  <link rel="icon" sizes="512x512" href="icon-512.png" />
   <meta name="theme-color" content="#6a0dad" />
-  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
-  <link rel="stylesheet" href="grade.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet" />
 </head>
 <body>
   <div class="container">
-    <h2><span class="typing-text">Student Grade Calculator</span></h2>
-    
-    <div id="inputs">
-      <div class="subject">
-        <input type="number" placeholder="Subject 1 Marks" readonly onclick="this.readOnly=false;" onblur="this.readOnly=true;" />
-        <button onclick="deleteSubject(this)">🗑️</button>
-      </div>
-      <div class="subject">
-        <input type="number" placeholder="Subject 2 Marks" readonly onclick="this.readOnly=false;" onblur="this.readOnly=true;" />
-        <button onclick="deleteSubject(this)">🗑️</button>
-      </div>
-      <div class="subject">
-        <input type="number" placeholder="Subject 3 Marks" readonly onclick="this.readOnly=false;" onblur="this.readOnly=true;" />
-        <button onclick="deleteSubject(this)">🗑️</button>
-      </div>
-    </div>
+    <header>
+      <h1>🟪 Pro To-Do App</h1>
+      <button id="toggleTheme">🌙</button>
+    </header>
 
-    <button onclick="addSubject()">➕ Add Subject</button>
-    <button onclick="calculateGrade()">✅ Calculate</button>
-    <button onclick="sortSubjects()">🔢 Sort by Marks</button>
-    <p id="result"></p>
-    <button onclick="downloadResult()">⬇️ Download Result</button>
-    <button onclick="toggleDark()">🌓 Toggle Dark Mode</button>
-    <button id="installBtn" style="display:none; margin-top:15px;">📲 Install App</button>
+    <section class="input-section">
+      <input type="text" id="taskInput" placeholder="➕ Add new task" />
+      <input type="date" id="dueDate" />
+      <select id="category">
+        <option value="📚 Study">📚 Study</option>
+        <option value="💼 Work">💼 Work</option>
+        <option value="🏠 Personal">🏠 Personal</option>
+      </select>
+      <select id="priority">
+        <option value="Low">🟢 Low</option>
+        <option value="Medium">🟡 Medium</option>
+        <option value="High">🔴 High</option>
+      </select>
+      <select id="repeat">
+        <option value="None">🔁 No Repeat</option>
+        <option value="Daily">🔁 Daily</option>
+        <option value="Weekly">🔁 Weekly</option>
+        <option value="Monthly">🔁 Monthly</option>
+      </select>
+      <button onclick="addTask()">Add</button>
+    </section>
 
-    <select id="themeSelector" onchange="changeTheme()" style="margin-top: 10px; padding: 10px;">
-      <option value="default">🎨 Default</option>
-      <option value="blue">💙 Blue</option>
-      <option value="dark">🌑 Dark</option>
-      <option value="green">💚 Green</option>
-    </select>
+    <section class="search-filter">
+      <input type="text" id="searchInput" placeholder="🔍 Search tasks" />
+      <div class="filters">
+        <button onclick="filterTasks('all')">All</button>
+        <button onclick="filterTasks('completed')">Completed</button>
+        <button onclick="filterTasks('pending')">Pending</button>
+      </div>
+    </section>
+
+    <ul id="taskList"></ul>
+
+    <footer>
+      <div id="stats">📊 0 tasks</div>
+      <button onclick="clearAll()">🗑️ Clear All</button>
+      <button onclick="exportTasks('txt')">⬇️ Export TXT</button>
+      <button onclick="exportTasks('json')">⬇️ Export JSON</button>
+      <button id="installBtn" style="display: none;">📥 Install App</button>
+    </footer>
   </div>
 
-  <script src="grade.js"></script>
+  <!-- Audio -->
+  <audio id="ding" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c9e3f979b5.mp3?filename=click-124467.mp3" preload="auto"></audio>
+  <audio id="delete" src="https://cdn.pixabay.com/download/audio/2022/03/18/audio_f3a993177d.mp3?filename=pop-94319.mp3" preload="auto"></audio>
+  <audio id="complete" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_48bde99868.mp3?filename=notification-112698.mp3" preload="auto"></audio>
+
+  <!-- Main Script -->
+  <script src="script.js"></script>
+
+  <!-- Service Worker & Install & Bubbles -->
+  <script>
+    // PWA install
+    let deferredPrompt;
+    const installBtn = document.getElementById("installBtn");
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = "inline-block";
+      installBtn.addEventListener("click", () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choice) => {
+          if (choice.outcome === "accepted") console.log("App Installed");
+          deferredPrompt = null;
+        });
+      });
+    });
+
+    // Service Worker
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+
+    // Notification permission
+    if (Notification && Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+
+    // Floating Bubbles
+    for (let i = 0; i < 20; i++) {
+      const bubble = document.createElement("div");
+      const size = Math.random() * 60 + 20 + "px";
+      bubble.classList.add("bubble");
+      bubble.style.left = Math.random() * 100 + "vw";
+      bubble.style.width = size;
+      bubble.style.height = size;
+      bubble.style.animationDuration = 10 + Math.random() * 10 + "s";
+      document.body.appendChild(bubble);
+    }
+  </script>
 </body>
 </html>

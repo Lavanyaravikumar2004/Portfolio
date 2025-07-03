@@ -1,7 +1,7 @@
 {
-  "name": "Student Grade Calculator",
-  "short_name": "GradeCalc",
-  "start_url": "./index.html",
+  "name": "Pro To-Do App",
+  "short_name": "ToDo",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#6a0dad",

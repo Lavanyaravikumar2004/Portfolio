@@ -1,44 +1,39 @@
 const CACHE_NAME = 'grade-calculator-v1';
 const urlsToCache = [
   '/',
-  '/index.html',
-  '/style.css',
-  '/script.js',
-  '/grade.css',
-  // Add more assets if needed
+  '/grade-calculator/',
+  '/grade-calculator/index.html',
+  '/grade-calculator/style.css',
+  '/grade-calculator/grade.css',
+  '/grade-calculator/script.js',
 ];
 
-// Install
+// Install event
 self.addEventListener('install', event => {
+  self.skipWaiting(); // Activate immediately
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
   );
 });
 
-// Activate
+// Activate event
 self.addEventListener('activate', event => {
+  clients.claim(); // Control all clients
   event.waitUntil(
-    caches.keys().then(keys => 
-      Promise.all(keys.map(key => {
-        if (key !== CACHE_NAME) return caches.delete(key);
-      }))
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.map(key => key !== CACHE_NAME && caches.delete(key))
+      )
     )
   );
 });
 
-// Fetch
+// Fetch event
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(res => res || fetch(event.request))
+    caches.match(event.request).then(response =>
+      response || fetch(event.request)
+    )
   );
-});
-self.addEventListener('install', event => {
-  self.skipWaiting(); // Force it to activate immediately
-  // your caching code...
-});
-
-self.addEventListener('activate', event => {
-  clients.claim(); // Take control of all pages
-  // your cleanup code...
 });

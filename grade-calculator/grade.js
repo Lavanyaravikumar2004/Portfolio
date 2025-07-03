@@ -119,6 +119,7 @@ window.onload = () => {
     subjectCount = saved.length;
   }
 
+  // 📲 Install App prompt
   let deferredPrompt;
   const installBtn = document.getElementById('installBtn');
   window.addEventListener('beforeinstallprompt', (e) => {
@@ -132,10 +133,12 @@ window.onload = () => {
           console.log('👍 App Installed');
         }
         deferredPrompt = null;
+        installBtn.style.display = 'none';
       });
     });
   });
 
+  // ✅ Register Service Worker
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js')
       .then(reg => console.log('✅ Service Worker Registered:', reg.scope))

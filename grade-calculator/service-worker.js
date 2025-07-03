@@ -1,23 +1,35 @@
-self.addEventListener('install', function (e) {
-  e.waitUntil(
-    caches.open('grade-calculator-cache-v2').then(function (cache) {
-      return cache.addAll([
-        '/grade-calculator/',
-        '/grade-calculator/index.html',
-        '/grade-calculator/grade.css',
-        '/grade-calculator/grade.js',
-        '/grade-calculator/icon-192.png',
-        '/grade-calculator/icon-512.png',
-        '/grade-calculator/manifest.json'
-      ]);
-    })
+const CACHE_NAME = 'grade-calculator-v1';
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/style.css',
+  '/script.js',
+  '/grade.css',
+  // Add more assets if needed
+];
+
+// Install
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
   );
 });
 
-self.addEventListener('fetch', function (e) {
-  e.respondWith(
-    caches.match(e.request).then(function (response) {
-      return response || fetch(e.request);
-    })
+// Activate
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys => 
+      Promise.all(keys.map(key => {
+        if (key !== CACHE_NAME) return caches.delete(key);
+      }))
+    )
+  );
+});
+
+// Fetch
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(res => res || fetch(event.request))
   );
 });

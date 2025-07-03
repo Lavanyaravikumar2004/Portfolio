@@ -1,4 +1,4 @@
-const CACHE_NAME = 'grade-calculator-cache-v1';
+const CACHE_NAME = 'grade-calculator-v5';
 
 const urlsToCache = [
   '/grade-calculator/',
@@ -15,7 +15,7 @@ self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      console.log('[SW] Caching app shell');
+      console.log('[SW] Caching app...');
       return cache.addAll(urlsToCache);
     })
   );
@@ -30,6 +30,7 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => {
       return response || fetch(event.request).catch(() => {
+        // fallback to home page on offline navigation
         if (event.request.mode === 'navigate') {
           return caches.match('/grade-calculator/index.html');
         }
